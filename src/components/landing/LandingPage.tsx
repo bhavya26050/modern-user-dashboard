@@ -9,7 +9,8 @@ import ValueProposition from './ValueProposition';
 import Work from './Work';
 import Process from './Process';
 import Testimonials from './Testimonials';
-import CTA from './CTA';
+import GradientCTA from './GradientCTA';
+import ContactForm from './ContactForm';
 import Footer from './Footer';
 
 export default function LandingPage() {
@@ -25,7 +26,8 @@ export default function LandingPage() {
       <Work />
       <Process />
       <Testimonials />
-      <CTA />
+      <GradientCTA />
+      <ContactForm />
       <Footer />
     </main>
   );
