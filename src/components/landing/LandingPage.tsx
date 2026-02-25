@@ -1,6 +1,10 @@
 import React from 'react';
 import Navbar from './Navbar';
 import Hero from './Hero';
+import InteractiveStats from './InteractiveStats';
+import InteractiveFeatures from './InteractiveFeatures';
+import MetricsShowcase from './MetricsShowcase';
+import DashboardPreview from './DashboardPreview';
 import ValueProposition from './ValueProposition';
 import Work from './Work';
 import Process from './Process';
@@ -13,6 +17,10 @@ export default function LandingPage() {
     <main className="bg-background">
       <Navbar />
       <Hero />
+      <InteractiveStats />
+      <InteractiveFeatures />
+      <MetricsShowcase />
+      <DashboardPreview />
       <ValueProposition />
       <Work />
       <Process />
