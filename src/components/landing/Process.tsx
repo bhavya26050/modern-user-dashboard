@@ -1,5 +1,6 @@
-import React from 'react';
+import { motion } from 'framer-motion';
 import { CheckCircle, Lightbulb, Code, Rocket } from 'lucide-react';
+import { useTheme } from '../../context/ThemeContext';
 
 const steps = [
   {
@@ -7,66 +8,199 @@ const steps = [
     title: 'Discovery',
     description: 'Understanding your vision',
     icon: Lightbulb,
+    color: 'from-blue-500 to-cyan-500',
   },
   {
     number: '02',
     title: 'Design',
     description: 'Crafting the experience',
     icon: CheckCircle,
+    color: 'from-indigo-500 to-violet-500',
   },
   {
     number: '03',
     title: 'Development',
     description: 'Building with precision',
     icon: Code,
+    color: 'from-violet-500 to-pink-500',
   },
   {
     number: '04',
     title: 'Launch',
     description: 'Going live with confidence',
     icon: Rocket,
+    color: 'from-pink-500 to-rose-500',
   },
 ];
 
 export default function Process() {
-  return (
-    <section id="process" className="py-24 px-8 bg-background">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-5xl font-bold text-foreground mb-4">
-            How We Work
-          </h2>
-          <p className="text-foreground/60 text-lg">
-            A streamlined process designed for collaboration and results
-          </p>
-        </div>
+  const { theme } = useTheme();
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: 'easeOut' },
+    },
+  };
+
+  return (
+    <section id="process" className={`py-24 px-6 lg:px-8 relative overflow-hidden transition-colors duration-500 ${
+      theme === 'dark'
+        ? 'bg-gradient-to-b from-slate-900 via-slate-900/50 to-slate-900'
+        : 'bg-gradient-to-b from-white via-gray-50 to-white'
+    }`}>
+      {/* Animated background lights */}
+      <motion.div
+        animate={{
+          opacity: [0.3, 0.6, 0.3],
+          y: [0, 30, 0],
+        }}
+        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+        className={`absolute top-1/3 left-0 w-96 h-96 rounded-full blur-3xl pointer-events-none ${
+          theme === 'dark' ? 'bg-indigo-600' : 'bg-indigo-300'
+        }`}
+      />
+      <motion.div
+        animate={{
+          opacity: [0.3, 0.6, 0.3],
+          y: [0, -30, 0],
+        }}
+        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+        className={`absolute bottom-1/3 right-0 w-96 h-96 rounded-full blur-3xl pointer-events-none ${
+          theme === 'dark' ? 'bg-violet-600' : 'bg-violet-300'
+        }`}
+      />
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-16"
+        >
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border backdrop-blur-sm mb-4 ${
+              theme === 'dark'
+                ? 'bg-indigo-500/10 border-indigo-500/30 text-indigo-400'
+                : 'bg-indigo-100/80 border-indigo-300 text-indigo-700'
+            }`}
+          >
+            <span className="text-sm font-semibold">Our Process</span>
+          </motion.div>
+
+          <h2 className={`text-4xl sm:text-5xl md:text-6xl font-bold mb-6 text-balance transition-colors duration-500 ${
+            theme === 'dark' ? 'text-white' : 'text-gray-900'
+          }`}>
+            How We <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">Build</span>
+          </h2>
+          <p className={`text-lg max-w-2xl mx-auto transition-colors duration-500 ${
+            theme === 'dark' ? 'text-slate-400' : 'text-gray-600'
+          }`}>
+            A streamlined process designed for collaboration and exceptional results
+          </p>
+        </motion.div>
+
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-100px' }}
+          className="grid grid-cols-1 md:grid-cols-4 gap-8"
+        >
           {steps.map((step, idx) => {
             const Icon = step.icon;
             return (
-              <div key={idx} className="relative">
-                {/* Connector line */}
+              <motion.div
+                key={idx}
+                variants={itemVariants}
+                whileHover={{ y: -12, scale: 1.05 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+                className="relative group"
+              >
+                {/* Animated connector line */}
                 {idx < steps.length - 1 && (
-                  <div className="hidden md:block absolute top-12 left-[calc(50%+24px)] right-[calc(-100%+24px)] h-1 bg-border"></div>
+                  <motion.div
+                    initial={{ scaleX: 0 }}
+                    whileInView={{ scaleX: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, delay: idx * 0.1 + 0.3 }}
+                    className={`hidden md:block absolute top-20 left-[calc(50%+24px)] right-[calc(-100%+24px)] h-1 origin-left ${
+                      theme === 'dark'
+                        ? 'bg-gradient-to-r from-indigo-500 to-violet-500'
+                        : 'bg-gradient-to-r from-indigo-400 to-violet-400'
+                    }`}
+                  />
                 )}
-                
-                <div className="relative bg-white rounded-2xl p-8 shadow-md">
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="text-4xl font-bold text-primary/20">{step.number}</div>
-                    <Icon className="w-8 h-8 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-bold text-foreground mb-2">
-                    {step.title}
-                  </h3>
-                  <p className="text-foreground/60 text-sm">
-                    {step.description}
-                  </p>
+
+                <div className={`relative rounded-3xl p-8 backdrop-blur-sm transition-all duration-300 h-full ${
+                  theme === 'dark'
+                    ? 'bg-slate-800/40 border border-slate-700/50 group-hover:border-indigo-500/50 group-hover:shadow-indigo-500/20'
+                    : 'bg-white/80 border border-gray-200 group-hover:border-indigo-400/50 group-hover:shadow-indigo-300/20'
+                }`}>
+                  {/* Gradient overlay on hover */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    whileHover={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${step.color} opacity-5 pointer-events-none`}
+                  />
+
+                  <motion.div className="relative z-10">
+                    <div className="flex items-center justify-between mb-6">
+                      <motion.div
+                        animate={{ rotate: [0, 5, -5, 0] }}
+                        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                        className={`text-5xl font-bold bg-gradient-to-br ${step.color} bg-clip-text text-transparent opacity-30 group-hover:opacity-50 transition-opacity duration-300`}
+                      >
+                        {step.number}
+                      </motion.div>
+                      <motion.div
+                        whileHover={{ rotate: 12, scale: 1.2 }}
+                        transition={{ type: 'spring', stiffness: 300 }}
+                        className={`p-3 rounded-2xl bg-gradient-to-br ${step.color}`}
+                      >
+                        <Icon className="w-8 h-8 text-white" />
+                      </motion.div>
+                    </div>
+
+                    <h3 className={`text-2xl font-bold mb-2 transition-colors duration-300 ${
+                      theme === 'dark'
+                        ? 'text-white group-hover:text-indigo-300'
+                        : 'text-gray-900 group-hover:text-indigo-600'
+                    }`}>
+                      {step.title}
+                    </h3>
+                    <p className={`transition-colors duration-300 ${
+                      theme === 'dark'
+                        ? 'text-slate-400 group-hover:text-slate-300'
+                        : 'text-gray-600 group-hover:text-gray-700'
+                    }`}>
+                      {step.description}
+                    </p>
+                  </motion.div>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
