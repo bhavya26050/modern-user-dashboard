@@ -1,214 +1,125 @@
-import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { Button } from '../ui/button';
 import { ArrowRight } from 'lucide-react';
+import { useTheme } from '../../context/ThemeContext';
 
 export default function Hero() {
-  const [scrollY, setScrollY] = useState(0);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
-
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    window.addEventListener('mousemove', handleMouseMove);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, []);
+  const { theme } = useTheme();
 
   return (
-    <section className="min-h-screen pt-32 px-8 bg-gradient-to-b from-background via-background to-foreground/5 overflow-hidden relative">
-      {/* Dynamic gradient background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Animated gradient orbs */}
-        <div
-          className="absolute top-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-primary/30 to-transparent rounded-full blur-3xl opacity-70"
-          style={{
-            transform: `translate(${mousePos.x * 0.05}px, ${scrollY * 0.3}px)`,
-            transition: 'transform 0.1s ease-out',
-          }}
-        />
-        <div
-          className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-gradient-to-tr from-secondary/30 to-transparent rounded-full blur-3xl opacity-70"
-          style={{
-            transform: `translate(${-mousePos.x * 0.05}px, ${-scrollY * 0.3}px)`,
-            transition: 'transform 0.1s ease-out',
-          }}
-        />
-        <div
-          className="absolute top-1/3 left-1/3 w-64 h-64 bg-gradient-to-b from-accent/20 to-transparent rounded-full blur-3xl opacity-50 animate-float"
-          style={{
-            animationDuration: '8s',
-          }}
-        />
+    <section className={`min-h-screen pt-32 px-6 lg:px-8 relative overflow-hidden transition-colors duration-500 ${
+      theme === 'dark'
+        ? 'bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950'
+        : 'bg-gradient-to-b from-gray-50 via-white to-gray-50'
+    }`}>
+      {/* Background decoration */}
+      <div className={`absolute top-0 left-1/4 w-96 h-96 rounded-full blur-3xl ${
+        theme === 'dark' ? 'bg-violet-600/10' : 'bg-violet-400/20'
+      }`} />
+      <div className={`absolute bottom-0 right-1/4 w-96 h-96 rounded-full blur-3xl ${
+        theme === 'dark' ? 'bg-indigo-600/10' : 'bg-indigo-400/20'
+      }`} />
 
-        {/* Animated lines/grid effect */}
-        <svg className="absolute inset-0 w-full h-full opacity-5" preserveAspectRatio="none">
-          <defs>
-            <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
-              <path d="M 50 0 L 0 0 0 50" fill="none" stroke="currentColor" strokeWidth="1" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#grid)" />
-        </svg>
-      </div>
-
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
-        {/* Left Content */}
-        <div className="space-y-8">
-          <div
-            style={{
-              animation: 'slideUp 0.8s ease-out',
-            }}
-          >
-            <h1 className="text-6xl lg:text-7xl font-bold leading-tight text-foreground text-balance">
-              We Design & Build High-Performance Web Products
-            </h1>
-            <p className="text-lg text-foreground/60 mt-6 leading-relaxed">
-              Crafting digital experiences that drive growth and delight users. From concept to launch, we bring innovation to every pixel.
-            </p>
+      <div className="max-w-7xl mx-auto relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="space-y-8"
+        >
+          {/* Tag */}
+          <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border w-fit ${
+            theme === 'dark'
+              ? 'bg-indigo-500/10 border-indigo-500/20 text-indigo-400'
+              : 'bg-indigo-100 border-indigo-200 text-indigo-700'
+          }`}>
+            <span className="text-sm font-semibold">Welcome to Frame & Code</span>
           </div>
 
-          <div
-            className="flex flex-col sm:flex-row gap-4 pt-4"
-            style={{
-              animation: 'slideUp 0.8s ease-out 0.2s both',
-            }}
+          {/* Heading */}
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-tight transition-colors duration-500 ${
+              theme === 'dark' ? 'text-white' : 'text-gray-900'
+            }`}
           >
-            <Button size="lg" className="rounded-full px-8 group hover:shadow-lg transition-all duration-300">
+            We Design & Build <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">High-Performance</span> Web Products
+          </motion.h1>
+
+          {/* Description */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className={`text-lg md:text-xl max-w-2xl transition-colors duration-500 ${
+              theme === 'dark' ? 'text-slate-400' : 'text-gray-600'
+            }`}
+          >
+            Crafting digital experiences that drive growth and delight users. From concept to launch, we bring innovation to every pixel.
+          </motion.p>
+
+          {/* CTA Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="flex flex-col sm:flex-row gap-4 pt-4"
+          >
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="px-8 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-2xl font-semibold shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 transition-all duration-300"
+            >
               Get Started
-              <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
-            </Button>
-            <Button 
-              size="lg" 
-              variant="outline" 
-              className="rounded-full px-8 border-foreground/20 hover:bg-foreground/5 hover:scale-105 transition-all duration-300"
+              <ArrowRight className="w-4 h-4 inline ml-2" />
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={`px-8 py-4 rounded-2xl font-semibold border transition-all duration-300 ${
+                theme === 'dark'
+                  ? 'border-slate-700 hover:bg-slate-800/50 text-white'
+                  : 'border-gray-300 hover:bg-gray-50 text-gray-900'
+              }`}
             >
               Learn More
-            </Button>
-          </div>
+            </motion.button>
+          </motion.div>
 
           {/* Stats */}
-          <div
-            className="grid grid-cols-3 gap-6 pt-8 border-t border-foreground/10"
-            style={{
-              animation: 'slideUp 0.8s ease-out 0.4s both',
-            }}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className={`grid grid-cols-3 gap-8 pt-12 border-t ${
+              theme === 'dark' ? 'border-slate-800' : 'border-gray-200'
+            }`}
           >
-            <div className="group cursor-pointer">
-              <div className="text-3xl font-bold text-primary group-hover:text-accent transition-colors duration-300">50+</div>
-              <p className="text-foreground/60 text-sm mt-1">Projects Done</p>
-            </div>
-            <div className="group cursor-pointer">
-              <div className="text-3xl font-bold text-primary group-hover:text-accent transition-colors duration-300">98%</div>
-              <p className="text-foreground/60 text-sm mt-1">Satisfaction</p>
-            </div>
-            <div className="group cursor-pointer">
-              <div className="text-3xl font-bold text-primary group-hover:text-accent transition-colors duration-300">12+</div>
-              <p className="text-foreground/60 text-sm mt-1">Years Exp.</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Right Visual - Animated Grid Showcase */}
-        <div
-          className="hidden lg:block relative h-96"
-          style={{
-            animation: 'slideInRight 0.8s ease-out 0.2s both',
-          }}
-        >
-          {/* Main gradient card */}
-          <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/20 via-secondary/10 to-transparent border border-white/20 backdrop-blur-md shadow-2xl overflow-hidden group hover:shadow-3xl transition-all duration-500">
-            {/* Animated gradient background */}
-            <div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
-              style={{
-                animation: 'shimmer 3s infinite',
-              }}
-            />
-
-            {/* Feature icons showcase */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="grid grid-cols-3 gap-4 p-8">
-                {[
-                  { icon: '⚡', label: 'Fast' },
-                  { icon: '🎨', label: 'Design' },
-                  { icon: '🔒', label: 'Secure' },
-                  { icon: '📱', label: 'Mobile' },
-                  { icon: '🌐', label: 'Global' },
-                  { icon: '💡', label: 'Smart' },
-                ].map((item, idx) => (
-                  <div
-                    key={idx}
-                    className="flex flex-col items-center justify-center p-4 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-all duration-300 hover:scale-110 cursor-pointer group"
-                    style={{
-                      animation: `float ${3 + idx * 0.2}s ease-in-out infinite`,
-                      animationDelay: `${idx * 0.1}s`,
-                    }}
-                  >
-                    <span className="text-3xl mb-2 group-hover:scale-125 transition-transform duration-300">
-                      {item.icon}
-                    </span>
-                    <span className="text-xs font-semibold text-foreground/70 group-hover:text-foreground transition-colors duration-300">
-                      {item.label}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+            {[
+              { value: '50+', label: 'Projects' },
+              { value: '98%', label: 'Satisfaction' },
+              { value: '12+', label: 'Years' },
+            ].map((stat, idx) => (
+              <motion.div
+                key={idx}
+                whileHover={{ y: -5 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent mb-2">
+                  {stat.value}
+                </div>
+                <p className={`text-sm transition-colors duration-500 ${
+                  theme === 'dark' ? 'text-slate-400' : 'text-gray-600'
+                }`}>
+                  {stat.label}
+                </p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </motion.div>
       </div>
-
-      <style>{`
-        @keyframes slideUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes slideInRight {
-          from {
-            opacity: 0;
-            transform: translateX(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-
-        @keyframes shimmer {
-          0% {
-            transform: translateX(-100%);
-          }
-          100% {
-            transform: translateX(100%);
-          }
-        }
-
-        @keyframes float {
-          0%, 100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-10px);
-          }
-        }
-      `}</style>
     </section>
   );
 }
