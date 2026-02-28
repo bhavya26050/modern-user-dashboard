@@ -21,7 +21,7 @@ const StatCard = ({
 }: StatCardProps) => {
   return (
     <Card
-      className={`w-full h-40 p-6 bg-[#1a1a1a] border-none overflow-hidden relative`}
+      className={`w-full h-40 p-6 bg-[#111] border-neutral-800/50 overflow-hidden relative hover:border-pink-500/30 transition-all duration-300`}
     >
       <div
         className={`absolute inset-0 opacity-10 bg-gradient-to-br ${gradientFrom} ${gradientTo}`}

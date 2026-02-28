@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card } from '../ui/card';
 import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
-import { Button } from '../ui/button';
 import { useTheme } from '../../context/ThemeContext';
 
 const testimonials = [
@@ -13,7 +12,6 @@ const testimonials = [
     role: 'CEO, TechVenture Inc',
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah',
     rating: 5,
-    company: 'TechVenture Inc',
   },
   {
     id: 2,
@@ -22,7 +20,6 @@ const testimonials = [
     role: 'Founder, Digital Studios',
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Marcus',
     rating: 5,
-    company: 'Digital Studios',
   },
   {
     id: 3,
@@ -31,7 +28,6 @@ const testimonials = [
     role: 'Product Director, StartupXYZ',
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Emma',
     rating: 5,
-    company: 'StartupXYZ',
   },
 ];
 
@@ -39,13 +35,8 @@ export default function Testimonials() {
   const [activeIndex, setActiveIndex] = useState(0);
   const { theme } = useTheme();
 
-  const handlePrev = () => {
-    setActiveIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1));
-  };
-
-  const handleNext = () => {
-    setActiveIndex((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1));
-  };
+  const handlePrev = () => setActiveIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1));
+  const handleNext = () => setActiveIndex((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1));
 
   const getVisibleTestimonials = () => {
     const items = [];
@@ -56,30 +47,25 @@ export default function Testimonials() {
   };
 
   return (
-    <section id="testimonials" className={`py-24 px-6 lg:px-8 relative overflow-hidden transition-colors duration-500 ${
-      theme === 'dark'
-        ? 'bg-gradient-to-b from-slate-900/50 via-slate-900 to-slate-900/50'
-        : 'bg-gradient-to-b from-gray-50/50 via-white to-gray-50/50'
-    }`}>
-      {/* Animated background lights */}
+    <section
+      id="testimonials"
+      className={`py-24 px-6 lg:px-8 relative overflow-hidden transition-colors duration-500 ${
+        theme === 'dark' ? 'bg-neutral-950' : 'bg-gradient-to-b from-gray-50/50 via-white to-gray-50/50'
+      }`}
+    >
+      {/* Background */}
       <motion.div
-        animate={{
-          opacity: [0.3, 0.6, 0.3],
-          y: [0, 30, 0],
-        }}
+        animate={{ opacity: [0.08, 0.2, 0.08], y: [0, 30, 0] }}
         transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
         className={`absolute top-1/4 -left-48 w-96 h-96 rounded-full blur-3xl pointer-events-none ${
-          theme === 'dark' ? 'bg-indigo-600' : 'bg-indigo-300'
+          theme === 'dark' ? 'bg-pink-600' : 'bg-pink-300'
         }`}
       />
       <motion.div
-        animate={{
-          opacity: [0.3, 0.6, 0.3],
-          y: [0, -30, 0],
-        }}
+        animate={{ opacity: [0.08, 0.2, 0.08], y: [0, -30, 0] }}
         transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
         className={`absolute bottom-1/4 -right-48 w-96 h-96 rounded-full blur-3xl pointer-events-none ${
-          theme === 'dark' ? 'bg-violet-600' : 'bg-violet-300'
+          theme === 'dark' ? 'bg-rose-600' : 'bg-rose-300'
         }`}
       />
 
@@ -98,21 +84,28 @@ export default function Testimonials() {
             transition={{ duration: 0.6 }}
             className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border backdrop-blur-sm mb-4 ${
               theme === 'dark'
-                ? 'bg-indigo-500/10 border-indigo-500/30 text-indigo-400'
-                : 'bg-indigo-100/80 border-indigo-300 text-indigo-700'
+                ? 'bg-pink-500/10 border-pink-500/30 text-pink-400'
+                : 'bg-pink-100/80 border-pink-300 text-pink-700'
             }`}
           >
             <span className="text-sm font-semibold">Client Testimonials</span>
           </motion.div>
 
-          <h2 className={`text-4xl sm:text-5xl md:text-6xl font-bold mb-6 text-balance transition-colors duration-500 ${
-            theme === 'dark' ? 'text-white' : 'text-gray-900'
-          }`}>
-            What Our <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">Clients Say</span>
+          <h2
+            className={`text-4xl sm:text-5xl md:text-6xl font-bold mb-6 text-balance transition-colors duration-500 ${
+              theme === 'dark' ? 'text-white' : 'text-gray-900'
+            }`}
+          >
+            What Our{' '}
+            <span className="bg-gradient-to-r from-pink-400 to-rose-400 bg-clip-text text-transparent">
+              Clients Say
+            </span>
           </h2>
-          <p className={`text-lg max-w-2xl mx-auto transition-colors duration-500 ${
-            theme === 'dark' ? 'text-slate-400' : 'text-gray-600'
-          }`}>
+          <p
+            className={`text-lg max-w-2xl mx-auto transition-colors duration-500 ${
+              theme === 'dark' ? 'text-neutral-400' : 'text-gray-600'
+            }`}
+          >
             Join 50+ companies that trust us with their digital transformation
           </p>
         </motion.div>
@@ -131,29 +124,22 @@ export default function Testimonials() {
                 <Card
                   className={`p-8 relative overflow-hidden group transition-all duration-300 h-full cursor-pointer ${
                     theme === 'dark'
-                      ? 'bg-slate-800/40 border-slate-700/50 hover:border-indigo-500/50 hover:shadow-indigo-500/20'
-                      : 'bg-white/80 border-gray-200 hover:border-indigo-400/50 hover:shadow-indigo-300/20'
+                      ? 'bg-neutral-900/60 border-neutral-800 hover:border-pink-500/50 hover:shadow-pink-500/10'
+                      : 'bg-white/80 border-gray-200 hover:border-pink-400/50 hover:shadow-pink-300/20'
                   }`}
                 >
-                  {/* Gradient overlay on hover */}
+                  {/* Gradient overlay */}
                   <motion.div
                     initial={{ opacity: 0 }}
                     whileHover={{ opacity: 1 }}
                     transition={{ duration: 0.3 }}
                     className={`absolute inset-0 bg-gradient-to-br ${
-                      theme === 'dark'
-                        ? 'from-indigo-500/10 to-violet-500/10'
-                        : 'from-indigo-300/10 to-violet-300/10'
+                      theme === 'dark' ? 'from-pink-500/5 to-rose-500/5' : 'from-pink-300/10 to-rose-300/10'
                     } pointer-events-none`}
                   />
 
                   <div className="relative z-10">
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.2 }}
-                      className="flex gap-1 mb-6"
-                    >
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="flex gap-1 mb-6">
                       {[...Array(testimonial.rating)].map((_, i) => (
                         <motion.div
                           key={i}
@@ -162,24 +148,24 @@ export default function Testimonials() {
                           transition={{ delay: i * 0.1 + 0.3, duration: 0.5 }}
                         >
                           <Star
-                            className={`w-5 h-5 fill-yellow-400 text-yellow-400 transition-transform duration-300 group-hover:scale-110`}
+                            className="w-5 h-5 fill-yellow-400 text-yellow-400 transition-transform duration-300 group-hover:scale-110"
                             style={{ transitionDelay: `${i * 50}ms` }}
                           />
                         </motion.div>
                       ))}
                     </motion.div>
 
-                    <p className={`mb-8 leading-relaxed text-lg italic transition-colors duration-300 ${
-                      theme === 'dark'
-                        ? 'text-slate-300 group-hover:text-white'
-                        : 'text-gray-700 group-hover:text-gray-900'
-                    }`}>
-                      "{testimonial.quote}"
+                    <p
+                      className={`mb-8 leading-relaxed text-lg italic transition-colors duration-300 ${
+                        theme === 'dark' ? 'text-neutral-300 group-hover:text-white' : 'text-gray-700 group-hover:text-gray-900'
+                      }`}
+                    >
+                      &ldquo;{testimonial.quote}&rdquo;
                     </p>
 
-                    <motion.div
+                    <div
                       className={`flex items-center gap-4 pt-6 border-t transition-colors duration-300 ${
-                        theme === 'dark' ? 'border-slate-700/50' : 'border-gray-200'
+                        theme === 'dark' ? 'border-neutral-800' : 'border-gray-200'
                       }`}
                     >
                       <motion.img
@@ -188,25 +174,23 @@ export default function Testimonials() {
                         alt={testimonial.author}
                         className={`w-14 h-14 rounded-full object-cover border-2 transition-all duration-300 ${
                           theme === 'dark'
-                            ? 'border-indigo-500/30 group-hover:border-indigo-500'
-                            : 'border-indigo-300 group-hover:border-indigo-500'
+                            ? 'border-pink-500/30 group-hover:border-pink-500'
+                            : 'border-pink-300 group-hover:border-pink-500'
                         }`}
                       />
                       <div>
-                        <div className={`font-bold transition-colors duration-300 ${
-                          theme === 'dark'
-                            ? 'text-white group-hover:text-indigo-300'
-                            : 'text-gray-900 group-hover:text-indigo-600'
-                        }`}>
+                        <div
+                          className={`font-bold transition-colors duration-300 ${
+                            theme === 'dark' ? 'text-white group-hover:text-pink-300' : 'text-gray-900 group-hover:text-pink-600'
+                          }`}
+                        >
                           {testimonial.author}
                         </div>
-                        <div className={`text-sm transition-colors duration-300 ${
-                          theme === 'dark' ? 'text-slate-400' : 'text-gray-600'
-                        }`}>
+                        <div className={`text-sm transition-colors duration-300 ${theme === 'dark' ? 'text-neutral-400' : 'text-gray-600'}`}>
                           {testimonial.role}
                         </div>
                       </div>
-                    </motion.div>
+                    </div>
                   </div>
                 </Card>
               </motion.div>
@@ -228,8 +212,8 @@ export default function Testimonials() {
             onClick={handlePrev}
             className={`p-3 rounded-full transition-all duration-300 ${
               theme === 'dark'
-                ? 'hover:bg-indigo-500/20 hover:border-indigo-500/50 border border-slate-700/50'
-                : 'hover:bg-indigo-100 hover:border-indigo-400 border border-gray-300'
+                ? 'hover:bg-pink-500/20 hover:border-pink-500/50 border border-neutral-800'
+                : 'hover:bg-pink-100 hover:border-pink-400 border border-gray-300'
             }`}
           >
             <ChevronLeft className="w-5 h-5" />
@@ -242,9 +226,10 @@ export default function Testimonials() {
                 onClick={() => setActiveIndex(idx)}
                 animate={{
                   width: idx === activeIndex ? 32 : 12,
-                  backgroundColor: idx === activeIndex
-                    ? theme === 'dark' ? '#818cf8' : '#4f46e5'
-                    : theme === 'dark' ? 'rgba(100, 116, 139, 0.5)' : 'rgba(209, 213, 219, 1)',
+                  backgroundColor:
+                    idx === activeIndex
+                      ? theme === 'dark' ? '#ec4899' : '#db2777'
+                      : theme === 'dark' ? 'rgba(115, 115, 115, 0.5)' : 'rgba(209, 213, 219, 1)',
                 }}
                 transition={{ duration: 0.3 }}
                 className="h-3 rounded-full"
@@ -258,8 +243,8 @@ export default function Testimonials() {
             onClick={handleNext}
             className={`p-3 rounded-full transition-all duration-300 ${
               theme === 'dark'
-                ? 'hover:bg-indigo-500/20 hover:border-indigo-500/50 border border-slate-700/50'
-                : 'hover:bg-indigo-100 hover:border-indigo-400 border border-gray-300'
+                ? 'hover:bg-pink-500/20 hover:border-pink-500/50 border border-neutral-800'
+                : 'hover:bg-pink-100 hover:border-pink-400 border border-gray-300'
             }`}
           >
             <ChevronRight className="w-5 h-5" />

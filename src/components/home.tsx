@@ -1,14 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import DashboardHeader from "./dashboard/DashboardHeader";
 import Sidebar from "./dashboard/Sidebar";
 import StatisticsGrid from "./dashboard/StatisticsGrid";
 import ChartGrid from "./dashboard/ChartGrid";
+import RecentContacts from "./dashboard/RecentContacts";
+import {
+  getAllContacts,
+  getContactStats,
+  getContactsByMonth,
+  getContactsBySource,
+  updateContactStatus,
+  type Contact,
+} from "../lib/contactStore";
 
 const Home = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [contacts, setContacts] = useState<Contact[]>([]);
+  const [stats, setStats] = useState(getContactStats());
+  const [lineData, setLineData] = useState(getContactsByMonth());
+  const [barData, setBarData] = useState(getContactsBySource());
+
+  const refreshData = useCallback(() => {
+    setContacts(getAllContacts());
+    setStats(getContactStats());
+    setLineData(getContactsByMonth());
+    setBarData(getContactsBySource());
+  }, []);
+
+  useEffect(() => {
+    refreshData();
+    // Poll for new contacts every 5 seconds
+    const interval = setInterval(refreshData, 5000);
+    return () => clearInterval(interval);
+  }, [refreshData]);
+
+  const handleStatusChange = (id: string, status: Contact["status"]) => {
+    updateContactStatus(id, status);
+    refreshData();
+  };
+
+  const newCount = contacts.filter((c) => c.status === "new").length;
 
   return (
-    <div className="flex h-screen bg-[#1a1a1a] text-white overflow-hidden">
+    <div className="flex h-screen bg-black text-white overflow-hidden">
       <Sidebar
         collapsed={sidebarCollapsed}
         onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
@@ -16,68 +50,65 @@ const Home = () => {
 
       <div className="flex-1 flex flex-col overflow-hidden">
         <DashboardHeader
-          userName="John Doe"
-          userAvatar="https://api.dicebear.com/7.x/avataaars/svg?seed=John"
-          notifications={[
-            { id: "1", message: "New user registration" },
-            { id: "2", message: "System update completed" },
-          ]}
+          userName="Admin"
+          userAvatar="https://api.dicebear.com/7.x/avataaars/svg?seed=Admin"
+          notifications={
+            newCount > 0
+              ? contacts
+                  .filter((c) => c.status === "new")
+                  .slice(0, 5)
+                  .map((c) => ({
+                    id: c.id,
+                    message: `New message from ${c.name}`,
+                  }))
+              : []
+          }
         />
 
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto bg-[#0a0a0a]">
           <div className="container mx-auto p-6 space-y-6">
             <StatisticsGrid
               stats={[
                 {
-                  title: "Total Users",
-                  value: "1,234",
-                  change: 12.5,
-                  trend: "up",
-                  gradientFrom: "from-purple-600",
-                  gradientTo: "to-blue-600",
-                },
-                {
-                  title: "Revenue",
-                  value: "$45,678",
-                  change: -8.2,
-                  trend: "down",
-                  gradientFrom: "from-emerald-600",
-                  gradientTo: "to-teal-600",
-                },
-                {
-                  title: "Active Sessions",
-                  value: "892",
-                  change: 23.1,
-                  trend: "up",
+                  title: "Total Contacts",
+                  value: stats.totalContacts.toLocaleString(),
+                  change: stats.monthChange,
+                  trend: stats.monthChange >= 0 ? "up" : "down",
                   gradientFrom: "from-pink-600",
                   gradientTo: "to-rose-600",
                 },
                 {
-                  title: "Conversion Rate",
-                  value: "3.42%",
-                  change: 4.3,
+                  title: "New Messages",
+                  value: stats.newMessages.toString(),
+                  change: stats.newMessages > 0 ? 15 : 0,
                   trend: "up",
-                  gradientFrom: "from-amber-600",
-                  gradientTo: "to-orange-600",
+                  gradientFrom: "from-fuchsia-600",
+                  gradientTo: "to-pink-600",
+                },
+                {
+                  title: "Response Rate",
+                  value: `${stats.responseRate}%`,
+                  change: 5.2,
+                  trend: "up",
+                  gradientFrom: "from-rose-600",
+                  gradientTo: "to-red-600",
+                },
+                {
+                  title: "This Month",
+                  value: stats.thisMonthContacts.toString(),
+                  change: stats.monthChange,
+                  trend: stats.monthChange >= 0 ? "up" : "down",
+                  gradientFrom: "from-pink-500",
+                  gradientTo: "to-fuchsia-600",
                 },
               ]}
             />
 
-            <ChartGrid
-              lineChartData={[
-                { x: "Jan", y: 10 },
-                { x: "Feb", y: 20 },
-                { x: "Mar", y: 15 },
-                { x: "Apr", y: 25 },
-                { x: "May", y: 30 },
-              ]}
-              barChartData={[
-                { label: "Jan", value: 65 },
-                { label: "Feb", value: 45 },
-                { label: "Mar", value: 85 },
-                { label: "Apr", value: 35 },
-                { label: "May", value: 55 },
-              ]}
+            <ChartGrid lineChartData={lineData} barChartData={barData} />
+
+            <RecentContacts
+              contacts={contacts}
+              onStatusChange={handleStatusChange}
             />
           </div>
         </div>

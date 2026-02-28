@@ -9,12 +9,6 @@ import {
   BarChart3,
   Mail,
 } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 
 interface SidebarProps {
   collapsed?: boolean;
@@ -33,47 +27,47 @@ const Sidebar = ({ collapsed = false, onToggle = () => {} }: SidebarProps) => {
     {
       icon: <LayoutDashboard className="w-5 h-5" />,
       label: "Dashboard",
-      href: "/",
+      href: "/dashboard",
       isActive: true,
-    },
-    {
-      icon: <Users className="w-5 h-5" />,
-      label: "Users",
-      href: "/users",
-    },
-    {
-      icon: <BarChart3 className="w-5 h-5" />,
-      label: "Analytics",
-      href: "/analytics",
     },
     {
       icon: <Mail className="w-5 h-5" />,
       label: "Messages",
-      href: "/messages",
+      href: "/dashboard",
+    },
+    {
+      icon: <Users className="w-5 h-5" />,
+      label: "Contacts",
+      href: "/dashboard",
+    },
+    {
+      icon: <BarChart3 className="w-5 h-5" />,
+      label: "Analytics",
+      href: "/dashboard",
     },
     {
       icon: <Settings className="w-5 h-5" />,
       label: "Settings",
-      href: "/settings",
+      href: "/dashboard",
     },
     {
       icon: <HelpCircle className="w-5 h-5" />,
       label: "Help",
-      href: "/help",
+      href: "/dashboard",
     },
   ];
 
   return (
     <div
       className={cn(
-        "h-full bg-[#1a1a1a] text-white transition-all duration-300 ease-in-out relative",
+        "h-full bg-[#0a0a0a] text-white transition-all duration-300 ease-in-out relative border-r border-neutral-800/50",
         collapsed ? "w-16" : "w-64",
       )}
     >
       {/* Collapse toggle button */}
       <button
         onClick={onToggle}
-        className="absolute -right-3 top-6 bg-[#7C3AED] rounded-full p-1.5 hover:bg-[#6D28D9] transition-colors"
+        className="absolute -right-3 top-6 bg-pink-600 rounded-full p-1.5 hover:bg-pink-700 transition-colors"
       >
         <ChevronRight
           className={cn(
@@ -84,38 +78,31 @@ const Sidebar = ({ collapsed = false, onToggle = () => {} }: SidebarProps) => {
       </button>
 
       {/* Logo area */}
-      <div className="p-4 h-16 flex items-center border-b border-gray-800">
-        <div className="w-8 h-8 bg-[#7C3AED] rounded-lg" />
+      <div className="p-4 h-16 flex items-center border-b border-neutral-800">
+        <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-rose-600 rounded-lg" />
         {!collapsed && (
-          <span className="ml-3 font-semibold text-lg">Dashboard</span>
+          <span className="ml-3 font-semibold text-lg">Contacts</span>
         )}
       </div>
 
       {/* Menu items */}
       <nav className="p-2">
-        <TooltipProvider>
-          {menuItems.map((item, index) => (
-            <Tooltip key={index}>
-              <TooltipTrigger asChild>
-                <a
-                  href={item.href}
-                  className={cn(
-                    "flex items-center h-12 px-3 rounded-lg mb-1 transition-colors",
-                    item.isActive
-                      ? "bg-[#7C3AED] text-white"
-                      : "text-gray-400 hover:bg-gray-800 hover:text-white",
-                  )}
-                >
-                  {item.icon}
-                  {!collapsed && <span className="ml-3">{item.label}</span>}
-                </a>
-              </TooltipTrigger>
-              {collapsed && (
-                <TooltipContent side="right">{item.label}</TooltipContent>
-              )}
-            </Tooltip>
-          ))}
-        </TooltipProvider>
+        {menuItems.map((item, index) => (
+          <a
+            key={index}
+            href={item.href}
+            title={collapsed ? item.label : undefined}
+            className={cn(
+              "flex items-center h-12 px-3 rounded-lg mb-1 transition-colors",
+              item.isActive
+                ? "bg-pink-600 text-white"
+                : "text-gray-400 hover:bg-neutral-800 hover:text-white",
+            )}
+          >
+            {item.icon}
+            {!collapsed && <span className="ml-3">{item.label}</span>}
+          </a>
+        ))}
       </nav>
     </div>
   );

@@ -25,15 +25,15 @@ const ChartGrid = ({
   ],
 }: ChartGridProps) => {
   return (
-    <div className="w-full h-full bg-[#1a1a1a] p-6 space-y-6">
-      <h2 className="text-2xl font-bold text-white mb-6">Analytics Overview</h2>
+    <div className="w-full h-full bg-transparent space-y-6">
+      <h2 className="text-2xl font-bold text-white">Contact Analytics</h2>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="w-full h-[280px]">
-          <LineChart data={lineChartData} title="Revenue Trends" height={280} />
+          <LineChart data={lineChartData} title="Contacts Over Time" height={280} />
         </div>
         <div className="w-full h-[280px]">
-          <BarChart data={barChartData} title="Monthly Sales" height={280} />
+          <BarChart data={barChartData} title="Contacts by Source" height={280} />
         </div>
       </div>
     </div>

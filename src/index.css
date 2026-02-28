@@ -70,8 +70,30 @@
     * {
       @apply border-border;
     }
+    html {
+      scroll-behavior: smooth;
+    }
     body {
-      @apply bg-background text-foreground;
+      @apply bg-background text-foreground antialiased;
+    }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      @apply rounded-full;
+      background: hsl(var(--muted));
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: hsl(var(--muted-foreground));
+    }
+    /* Selection color */
+    ::selection {
+      background: rgba(236, 72, 153, 0.3);
+      color: inherit;
     }
   }
 
